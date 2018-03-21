@@ -1,9 +1,10 @@
 import React, {Component} from "react"
+import {Register} from "./register";
 
 export class Main extends Component{
     render() {
         return(
-            <div>this is main</div>
+            <div className="main"><Register/></div>
         );
     };
 }
