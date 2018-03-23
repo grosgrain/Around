@@ -4,13 +4,15 @@ import $ from 'jquery';
 import {API_ROOT} from "../constants";
 import { Link } from 'react-router-dom';
 
+
 const FormItem = Form.Item;
 
 class RegistrationForm extends Component {
     state = {
         confirmDirty: false,
-        autoCompleteResult: [],
+        autoCompleteResult: []
     };
+
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
@@ -23,14 +25,14 @@ class RegistrationForm extends Component {
                         username: values.username,
                         password: values.password,
                     }),
-                }).then(function(response) {
+                }).then((response) => {
                     message.success(response);
-                }, function(response) {
+                    setTimeout(() => {this.props.history.push('/login');}, 3000)
+                }, (response) => {
                     message.error(response.responseText);
-                }).catch(function(error) {
+                }).catch((error) => {
                     message.error(error);
                 });
-
             }
         });
     }
@@ -122,11 +124,12 @@ class RegistrationForm extends Component {
                 <FormItem {...tailFormItemLayout}>
                     <Button type="primary" htmlType="submit">Register</Button>
                     <p>
-                        I already have an account. Go back to <Link to="/login">Log in!g</Link>
+                        I already have an account, go back to <Link to="/login">Log in!</Link>
                     </p>
 
                 </FormItem>
             </Form>
+
         );
     }
 }
