@@ -9,6 +9,7 @@ const operations = <Button type="primary">Extra Action</Button>;
 export class Home extends React.Component{
     state = {
         loadingGeoLocation: false,
+        loadingPosts: false,
         error: '',
     }
     componentDidMount() {
@@ -43,7 +44,9 @@ export class Home extends React.Component{
         if (this.state.error) {
             return (<div>{this.state.error}</div>);
         } else if (this.state.loadingGeoLocation) {
-            return (<Spin tip="Loading Geo Location..."/>)
+            return (<Spin tip="Loading Geo Location..."/>);
+        } else if (this.state.loadingPosts){
+            return (<Spin tip="Loading Posts..."/>);
         } else {
             return null;
         }
@@ -51,6 +54,7 @@ export class Home extends React.Component{
 
     loadNearbyPosts = () => {
         const {lat, lon} = JSON.parse(localStorage.getItem(POS_KEY));
+        this.setState({loadingPosts:true, error: ''});
         $.ajax({
             url: `${API_ROOT}/search?lat=${lat}&lon=${lon}&range=20`,
             method: "GET",
@@ -59,8 +63,10 @@ export class Home extends React.Component{
             }
         }).then((response) => {
                 console.log(response);
+                this.setState({loadingPosts:false, error:''});
             }, (error) => {
                 console.log(error);
+                this.setState({loadingPosts:false, error: error.responseText});
             }
         ).catch((error) => {
                 console.log(error);
