@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {Header} from './header';
-import {Main} from './main';
+import {Header} from './Header';
+import {Main} from './Main';
 import '../styles/App.css';
 import {TOKEN_KEY} from '../constants'
 

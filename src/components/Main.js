@@ -1,8 +1,8 @@
 import React, {Component} from "react"
-import {Register} from "./register";
-import {Login} from "./login";
+import {Register} from "./Register";
+import {Login} from "./Login";
 import { Switch, Route, Redirect } from 'react-router';
-import {Home} from './home';
+import {Home} from './Home';
 
 
 export class Main extends Component{
