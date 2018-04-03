@@ -1,8 +1,14 @@
 import React from 'react';
-import {Form, Input} from 'antd';
-import {PicturesWall} from "./PicturesWall"
+import {Form, Input, Upload, Icon} from 'antd';
 
 class CreatePostForm extends React.Component{
+    normFile = (e) => {
+        if (Array.isArray(e)) {
+            return e;
+        }
+        return e && e.fileList;
+    }
+
     render() {
         const FormItem = Form.Item;
         const {getFieldDecorator} = this.props.form;
@@ -23,12 +29,23 @@ class CreatePostForm extends React.Component{
                 </FormItem>
                 <FormItem
                     {...formItemLayout}
-                    label="Picture">
-                    {getFieldDecorator('Picture', {
-                        rules: [{ required: true, message: 'Please upload the picture!' }],
-                    })(
-                        <PicturesWall/>
-                    )}
+                    label="Image"
+                >
+                    <div className="dropbox">
+                        {getFieldDecorator('dragger', {
+                            valuePropName: 'fileList',
+                            getValueFromEvent: this.normFile,
+                            rules: [{ required: true, message: 'Please select a image!' }],
+                        })(
+                            <Upload.Dragger name="files" action="/upload.do">
+                                <p className="ant-upload-drag-icon">
+                                    <Icon type="inbox" />
+                                </p>
+                                <p className="ant-upload-text">Click or drag file to this area to upload</p>
+                                <p className="ant-upload-hint">Support for a single or bulk upload.</p>
+                            </Upload.Dragger>
+                        )}
+                    </div>
                 </FormItem>
             </Form>
         );
