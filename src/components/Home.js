@@ -1,16 +1,18 @@
 import React from 'react';
-import { Tabs, Button, Spin } from 'antd';
+import { Tabs, Spin } from 'antd';
 import $ from 'jquery';
 import {GEO_OPTIONS, POS_KEY, API_ROOT, AUTH_PREFIX, TOKEN_KEY} from "../constants";
+import {Gallery} from "./Gallery"
+import {CreatePostButton} from "./CreatePostButton"
 
 const TabPane = Tabs.TabPane;
-const operations = <Button type="primary">Extra Action</Button>;
 
 export class Home extends React.Component{
     state = {
         loadingGeoLocation: false,
         loadingPosts: false,
         error: '',
+        posts: [],
     }
     componentDidMount() {
         this.setState({loadingGeoLocation: true, error: ''});
@@ -47,6 +49,18 @@ export class Home extends React.Component{
             return (<Spin tip="Loading Geo Location..."/>);
         } else if (this.state.loadingPosts){
             return (<Spin tip="Loading Posts..."/>);
+        } else if(this.state.posts && this.state.posts.length > 0) {
+            const images = this.state.posts.map((post) => {
+                return {
+                    user: post.user,
+                    src: post.url,
+                    thumbnail: post.url,
+                    thumbnailWidth: 400,
+                    thumbnailHeight: 300,
+                    caption: post.message,
+                };
+            })
+            return <Gallery images={images}/>
         } else {
             return null;
         }
@@ -63,7 +77,7 @@ export class Home extends React.Component{
             }
         }).then((response) => {
                 console.log(response);
-                this.setState({loadingPosts:false, error:''});
+                this.setState({loadingPosts:false, error:'', posts: response});
             }, (error) => {
                 console.log(error);
                 this.setState({loadingPosts:false, error: error.responseText});
@@ -75,6 +89,7 @@ export class Home extends React.Component{
     }
 
     render() {
+        const operations = <CreatePostButton/>;
         return(
             <Tabs tabBarExtraContent={operations} className="main-tabs">
                 <TabPane tab="Posts" key="1">
