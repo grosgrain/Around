@@ -18,14 +18,12 @@ export class CreatePostButton extends React.Component {
     handleOk = () => {
         this.form.validateFields((err, values) => {
             if (!err) {
-                console.log(values);
                 const { lat, lon } = JSON.parse(localStorage.getItem(POS_KEY));
                 const formData = new FormData();
                 formData.set('lat', lat + Math.random() * 0.1 - 0.05);
                 formData.set('lon', lon + Math.random() * 0.1 - 0.05);
                 formData.set('message', values.message);
                 formData.set('image', values.image[0]);
-
                 this.setState({
                     confirmLoading: true,
                 });
@@ -40,18 +38,18 @@ export class CreatePostButton extends React.Component {
                     dataType: 'text',
                     data: formData,
                 }).then(()=>{
-                    this.setState({
-                        confirmLoading: false,
-                        visible: false,
-                    });
+                    message.success('Successfully created a post');
+                    this.form.resetFields();
                 }, (error) => {
-                    this.setState({
-                        confirmLoading: false,
+                    message.error(error.responseText);
+                    this.form.resetFields();
+                }).then(()=> {
+                    this.props.loadNearbyPosts().then(() => {
+                        this.setState({ visible: false, confirmLoading: false });
                     });
-                    console.log(error);
                 }).catch((error) => {
                     message.error('Create post failed.');
-                    console.error(error);
+                    console.log(error);
                 });
             }
         });
