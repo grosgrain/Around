@@ -9,6 +9,9 @@ class CreatePostForm extends React.Component{
         return e && e.fileList;
     }
 
+    beforeUpload = () => {
+        return false;
+    }
     render() {
         const FormItem = Form.Item;
         const {getFieldDecorator} = this.props.form;
@@ -21,7 +24,7 @@ class CreatePostForm extends React.Component{
                 <FormItem
                     {...formItemLayout}
                     label="Message">
-                    {getFieldDecorator('Message', {
+                    {getFieldDecorator('message', {
                         rules: [{ required: true, message: 'Please input the message!' }],
                     })(
                         <Input />
@@ -32,12 +35,12 @@ class CreatePostForm extends React.Component{
                     label="Image"
                 >
                     <div className="dropbox">
-                        {getFieldDecorator('dragger', {
+                        {getFieldDecorator('image', {
                             valuePropName: 'fileList',
                             getValueFromEvent: this.normFile,
-                            rules: [{ required: true, message: 'Please select a image!' }],
+                            rules: [{ required: true, message: 'Please select an image!' }],
                         })(
-                            <Upload.Dragger name="files" action="/upload.do">
+                            <Upload.Dragger name="files" beforeUpload={this.beforeUpload}>
                                 <p className="ant-upload-drag-icon">
                                     <Icon type="inbox" />
                                 </p>
