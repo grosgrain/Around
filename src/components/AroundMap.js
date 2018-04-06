@@ -29,7 +29,6 @@ class AroundMap extends React.Component{
 
     getMapRef = (map) => {
         this.map = map;
-        window.map = map;
     }
 
     render() {

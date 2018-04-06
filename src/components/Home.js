@@ -78,7 +78,6 @@ export class Home extends React.Component{
                 Authorization: `${AUTH_PREFIX} ${localStorage.getItem(TOKEN_KEY)}`
             }
         }).then((response) => {
-                console.log(response);
                 this.setState({loadingPosts:false, error:'', posts: response});
             }, (error) => {
                 console.log(error);
